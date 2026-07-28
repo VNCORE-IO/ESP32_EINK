@@ -1,6 +1,6 @@
 //Convert Image to cpp:https://javl.github.io/image2cpp/
 /* PIN CONNECT */
-// NO EINK  ESP32
+// EINK  ESP32
 // 1:	GND	  GND
 // 2:	3.3V	3.3
 // 3:	SCL	  18
@@ -10,6 +10,18 @@
 // 7:	CS	  5
 // 8:	BUSY	4
 //#include <GFX.h>
+/*** NO EINK  ESP32S3
+int BUSY_Pin = 8; 
+int RST_Pin = 9; 
+int DC_Pin = 10; 
+int CS_Pin = 7; 
+int SCK_Pin = 12; 
+int SDI_Pin = 11; 
+***/
+int BUSY_Pin = 8; 
+int RST_Pin = 9; 
+int DC_Pin = 10; 
+int CS_Pin = 7; 
 #include "qrCode.h"
 #include <GxEPD2_BW.h>
 #include <GxEPD2_3C.h>
@@ -25,7 +37,7 @@
 // #include "GxEPD2_display_selection_added.h"
 
 //3Color
-GxEPD2_3C<GxEPD2_213c, GxEPD2_213c::HEIGHT> display(GxEPD2_213c(/*CS=5*/ SS, /*DC=*/17, /*RST=*/16, /*BUSY=*/4));  // GDEW0213Z16 104x212, UC8151 (IL0373)
+GxEPD2_3C<GxEPD2_213c, GxEPD2_213c::HEIGHT> display(GxEPD2_213c(/*CS=*/ CS_Pin, /*DC=*/DC_Pin, /*RST=*/RST_Pin, /*BUSY=*/BUSY_Pin));  // GDEW0213Z16 104x212, UC8151 (IL0373)
 //GxEPD2_3C<GxEPD2_213_Z19c, GxEPD2_213_Z19c::HEIGHT> display(GxEPD2_213_Z19c(/*CS=5*/ SS, /*DC=*/ 17, /*RST=*/ 16, /*BUSY=*/ 4)); // GDEH0213Z19 104x212, UC8151D
 //GxEPD2_3C<GxEPD2_213_Z98c, GxEPD2_213_Z98c::HEIGHT> display(GxEPD2_213_Z98c(/*CS=5*/ SS, /*DC=*/ 17, /*RST=*/ 16, /*BUSY=*/ 4)); // GDEY0213Z98 122x250, SSD1680
 
