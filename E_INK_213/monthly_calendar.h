@@ -1,4 +1,5 @@
 //https://github.com/adafruit/Adafruit_Learning_System_Guides/tree/main/Airlift_ePaper_Calendar
+//This is Demo you must edit correct for all month
 #include "RTClib.h"
 #include "GxEPD2_GFX.h"
 
@@ -82,7 +83,7 @@ void drawCalendar(GxEPD2_GFX_BASE_CLASS *_gfx,struct tm *today, struct tm *pickd
     curday -= 7;
 
   int x = 0;
-  int y = 40;
+  int y = 30;
   for (int i = 0; i < 7; i++) {
     x = 4 + i * (_gfx->width() - 8) / 7;
     _gfx->setTextColor(GxEPD_BLACK);
@@ -91,28 +92,25 @@ void drawCalendar(GxEPD2_GFX_BASE_CLASS *_gfx,struct tm *today, struct tm *pickd
     _gfx->setCursor(x + (_gfx->width() / 7 - w) / 2, y - 8);
     _gfx->print(String(dows[i]).substring(0, 3));
   }
-  _gfx->drawLine(0, 27, _gfx->width(), 27, GxEPD_BLACK);
-  y = 45;
+  _gfx->drawLine(0, 20, _gfx->width(), 20, GxEPD_BLACK);
+  y = 32;
   while (curday <= daysinmonth) {
     for (int i = 0; i < 7; i++) {
       x = 4 + i * (_gfx->width() - 8) / 7;
       if (curday >= 1 && curday <= daysinmonth) {
         _gfx->setCursor(x, y);
         _gfx->setTextColor(GxEPD_BLACK);
-        _gfx->setFont(&FreeSans9pt7b);
+        _gfx->setFont();
         int16_t fx, fy;
         uint16_t w, h;
         String strday = String(curday);
         if ((today->tm_year == pickdate->tm_year) && (today->tm_mon == pickdate->tm_mon) && (curday == pickdate->tm_mday)) {
-          if (currentday != None) {
-            _gfx->setFont(&FreeSansBold9pt7b);
-          }
           if (currentday == BlackCircle) {
-            //_gfx->setTextColor(EPD_INVERSE);
-            _gfx->fillCircle(x + (_gfx->width() - 8) / 7 / 2, y, 16, GxEPD_BLACK);
+            _gfx->setTextColor(GxEPD_WHITE);
+            _gfx->fillCircle(x + (_gfx->width() - 4) / 7 / 2, y+6, 8, GxEPD_BLACK);
           } else if (currentday == RedCircle) {
-            _gfx->setTextColor(GxEPD_BLACK);
-            _gfx->fillCircle(x + (_gfx->width() - 8) / 7 / 2, y, 16, GxEPD_BLACK);
+            _gfx->setTextColor(GxEPD_WHITE);
+            _gfx->fillCircle(x + (_gfx->width() - 4) / 7 / 2, y+6, 8, GxEPD_RED);
           }
         }
         _gfx->getTextBounds(strday.c_str(), 0, 0, &fx, &fy, &w, &h);
@@ -123,7 +121,7 @@ void drawCalendar(GxEPD2_GFX_BASE_CLASS *_gfx,struct tm *today, struct tm *pickd
       }
       curday++;
     }
-    y += 24;
+    y += 14;
   }
   Serial.println("display update completed");
 }

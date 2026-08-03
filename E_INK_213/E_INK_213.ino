@@ -10,7 +10,7 @@
 // 7:	CS	  5
 // 8:	BUSY	4
 //#include <GFX.h>
-/*** NO EINK  ESP32S3
+/*** EINK  ESP32S3
 int BUSY_Pin = 8; 
 int RST_Pin = 9; 
 int DC_Pin = 10; 
@@ -18,18 +18,30 @@ int CS_Pin = 7;
 int SCK_Pin = 12; 
 int SDI_Pin = 11; 
 ***/
-int BUSY_Pin = 8; 
-int RST_Pin = 9; 
-int DC_Pin = 10; 
-int CS_Pin = 7; 
+// int BUSY_Pin = 8; 
+// int RST_Pin = 9; 
+// int DC_Pin = 10; 
+// int CS_Pin = 7; 
+////EINK  ESP32C3
+#define BUSY_Pin 0
+#define RST_Pin 3
+#define DC_Pin 2
+#define CS_Pin 1
+// Define SPI pins
+#define SPI_MISO -1
+#define SPI_MOSI 6
+#define SPI_SCK 4
+#define SPI_CS -1
 #include "qrCode.h"
 #include <GxEPD2_BW.h>
 #include <GxEPD2_3C.h>
 #include <GxEPD2_4C.h>
 #include <GxEPD2_7C.h>
+#include <Fonts/FreeSans9pt7b.h>
+#include <Fonts/FreeSansBold9pt7b.h>
 #include <Fonts/FreeSansBold12pt7b.h>
 #include <Fonts/FreeSerifBold12pt7b.h>
-
+ #include "monthly_calendar.h" 
 // // select the display class and display driver class in the following file (new style):
 // #include "GxEPD2_display_selection_new_style.h"
 // // or select the display constructor line in one of the following files (old style):
@@ -76,35 +88,23 @@ void fillDisplay(){
     display.endWrite();
   } while (display.nextPage());
 }
+void showCalendar(){
+  display.firstPage();
+  do
+  {
+    display.fillScreen(GxEPD_WHITE);
+    showCalendar(&display);
+  }
+  while (display.nextPage());
+}
 void setup() {
   //display.init(115200); // default 10ms reset pulse, e.g. for bare panels with DESPI-C02
   display.init(115200, true, 2, false);  // USE THIS for Waveshare boards with "clever" reset circuit, 2ms reset pulse
   display.setRotation(1);
   fillDisplay();
   //drawQR();
-  showPG();
+  //showPG();
+  showCalendar();
   display.hibernate();
 }
-// void helloWorld()
-// {
-//   display.setRotation(1);
-//   display.setFont(&FreeSerifBold18pt7b);
-//   display.setTextColor(GxEPD_RED);
-//   int16_t tbx, tby; uint16_t tbw, tbh;
-//   display.getTextBounds(lineA, 0, 0, &tbx, &tby, &tbw, &tbh);
-//   // center the bounding box by transposition of the origin:
-//   uint16_t x = ((display.width() - tbw) / 2) - tbx;
-//   uint16_t y = ((display.height() - tbh) / 2) - tby;
-//   display.setFullWindow();
-//   display.firstPage();
-//   do
-//   {
-//     display.fillScreen(GxEPD_BLACK);
-//     display.setCursor(x, y);
-//     display.print(lineA);
-//   }
-//   while (display.nextPage());
-//   display.setTextColor(GxEPD_WHITE);
-// }
-
 void loop(){};
